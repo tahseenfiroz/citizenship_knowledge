@@ -24,11 +24,17 @@ export type QuizResult = {
 
 const KEY = "citizenship_quiz_last_result_v1";
 
+function isBrowser() {
+  return typeof window !== "undefined" && typeof sessionStorage !== "undefined";
+}
+
 export function saveLastResult(result: QuizResult) {
+  if (!isBrowser()) return;
   sessionStorage.setItem(KEY, JSON.stringify(result));
 }
 
 export function loadLastResult(): QuizResult | null {
+  if (!isBrowser()) return null;
   const raw = sessionStorage.getItem(KEY);
   if (!raw) return null;
   try {
@@ -39,5 +45,6 @@ export function loadLastResult(): QuizResult | null {
 }
 
 export function clearLastResult() {
+  if (!isBrowser()) return;
   sessionStorage.removeItem(KEY);
 }
